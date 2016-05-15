@@ -1,0 +1,6 @@
+mariadb:
+  build: .
+  environment:
+    galera_cluster_members: "host1,host2,host3"
+    MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    mariadb_display_configuration: "yes"

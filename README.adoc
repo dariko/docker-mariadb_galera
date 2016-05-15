@@ -1,0 +1,50 @@
+docker-mariadb_galera
+=====================
+
+This image is based on the link:https://hub.docker.com/_/mariadb/[
+official MariaDB image], and is configured to execute the script
+`run.sh` before continuing the official image startup.
+
+The variables used by the base image are still used by the same scripts. +
+In addition, this container builds a configuration file for a galera
+cluster, using these  additional parameters:
+
+[cols="1,1,1,3"]
+|===
+|name|required|default|description
+
+|bind_address
+^|no
+|0.0.0.0
+|link:https://mariadb.com/kb/en/mariadb/server-system-variables/#bind_address[MariaDB docs]
+
+
+|galera_cluster_members
+1.2+^.^|one of
+||Comma separated list of cluster members host1,host2,host3.
+Will be used as `gcomm://$galera_cluster_members` parameter for, and
+override, `wsrep_cluster_address`.
+
+|wsrep_cluster_address
+||link:https://mariadb.com/kb/en/mariadb/galera-cluster-system-variables/#wsrep_cluster_address[MariaDB docs]
+
+|mariadb_display_configuration
+^|no
+||if set will print to stdout the generated configuration
+
+|ssl_cert_pem
+1.2+^.^|both or
+none
+|
+1.2+|Certificate/keys used for replication. +
+__**MUST** be the same in all galera hosts.__
+
+|ssl_key_pem
+||
+|===
+
+
+The `ssl_cert_pem`, `ssl_key_pem` parameters, if given, must be set as
+----
+-e ssl_cert_pem="-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----"
+----
